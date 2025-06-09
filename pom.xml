@@ -92,8 +92,21 @@ under the License.
 			<artifactId>flink-connector-kafka</artifactId>
 			<version>3.0.1-1.18</version>
 		</dependency>
-
-		<!-- Add logging framework, to produce console output when running in the IDE. -->
+		<dependency>
+			<groupId>org.apache.flink</groupId>
+			<artifactId>flink-sql-connector-elasticsearch7</artifactId>
+			<version>3.0.1-1.17</version>
+		</dependency>
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>42.7.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.flink</groupId>
+			<artifactId>flink-connector-jdbc</artifactId>
+			<version>3.2.0-1.19</version>
+		</dependency><!-- Add logging framework, to produce console output when running in the IDE. -->
 		<!-- These dependencies are excluded from the application JAR by default. -->
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>

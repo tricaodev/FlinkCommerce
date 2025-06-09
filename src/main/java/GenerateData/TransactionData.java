@@ -1,6 +1,6 @@
 package GenerateData;
 
-import Entity.Transaction;
+import Dto.Transaction;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -15,7 +15,7 @@ public class TransactionData {
     private static final Random random = new Random(42);
     private static final ObjectMapper mapper = new ObjectMapper()
             .registerModule(new JavaTimeModule())
-            .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);;
+            .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
     private static final List<String> productIdList = new ArrayList<>(Arrays.asList("product1", "product2", "product3", "product4", "product5", "product6"));
     private static final List<String> productNameList = new ArrayList<>(Arrays.asList("laptop", "mobile", "tablet", "watch", "headphone", "speaker"));

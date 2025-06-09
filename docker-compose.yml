@@ -47,7 +47,7 @@ services:
       - flink_commerce_network
 
   flink-jobmanager:
-    image: flink:1.18.1
+    image: flink:1.18.1-scala_2.12-java17
     container_name: flink-jobmanager
     ports:
       - "8082:8081"
@@ -57,18 +57,19 @@ services:
       JOB_MANAGER_RPC_ADDRESS: flink-jobmanager
     volumes:
       - ./src/main/java/FlinkCommerce:/opt/flink/jobs
+      - ./target:/opt/flink/target
     networks:
       - flink_commerce_network
 
   flink-taskmanager:
-    image: flink:1.18.1
+    image: flink:1.18.1-scala_2.12-java17
     container_name: flink-taskmanager
     command: taskmanager
     restart: on-failure
     depends_on:
       - flink-jobmanager
     environment:
-      TASK_MANAGER_NUMBER_OF_TASK_SLOTS: 2
+      TASK_MANAGER_NUMBER_OF_TASK_SLOTS: 1
       JOB_MANAGER_RPC_ADDRESS: flink-jobmanager
     networks:
       - flink_commerce_network
