@@ -252,7 +252,7 @@ public class DataStreamJob {
 									.source(jsonData, XContentType.JSON);
 							requestIndexer.add(indexRequest);
 						})
-						.setBulkFlushMaxActions(1)
+						.setBulkFlushMaxActions(20)
 						.build()
 		).name("Streaming data to Elasticsearch");
 
