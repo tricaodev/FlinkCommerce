@@ -1,3 +1,6 @@
+# System Architecture
+![system_architecture](https://github.com/user-attachments/assets/e4835095-441e-44f0-93e8-0575a9cee604)
+
 # How to run app
 ## 1. Build system architecture
 ```docker-compose up -d```
