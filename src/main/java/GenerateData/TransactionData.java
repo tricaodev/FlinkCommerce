@@ -31,7 +31,7 @@ public class TransactionData {
                 productIdList.get(random.nextInt(productIdList.size())),
                 productNameList.get(random.nextInt(productNameList.size())),
                 productCategoryList.get(random.nextInt(productCategoryList.size())),
-                (float) Math.round((10 + random.nextFloat() * 990) * 100) / 100,
+                (double) Math.round((10 + random.nextFloat() * 990) * 100) / 100,
                 1 + random.nextInt(10),
                 productBrandList.get(random.nextInt(productBrandList.size())),
                 currencyList.get(random.nextInt(currencyList.size())),
