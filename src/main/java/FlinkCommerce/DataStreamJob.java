@@ -243,7 +243,7 @@ public class DataStreamJob {
 		// Streaming data to Elasticsearch
 		transactionDataStream.sinkTo(
 				new Elasticsearch7SinkBuilder<Transaction>()
-						.setHosts(new HttpHost("localhost", 9200, "http"))
+						.setHosts(new HttpHost("elasticsearch", 9200, "http"))
 						.setEmitter((transaction, context, requestIndexer) -> {
 							String jsonData = ConvertTransactionToJson(transaction);
 							IndexRequest indexRequest = Requests.indexRequest()
@@ -252,6 +252,7 @@ public class DataStreamJob {
 									.source(jsonData, XContentType.JSON);
 							requestIndexer.add(indexRequest);
 						})
+						.setBulkFlushMaxActions(1)
 						.build()
 		).name("Streaming data to Elasticsearch");
 
