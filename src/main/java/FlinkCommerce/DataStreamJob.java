@@ -8,16 +8,23 @@ import Dto.Transaction;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.api.java.functions.KeySelector;
 import org.apache.flink.api.java.tuple.Tuple2;
+import org.apache.flink.connector.elasticsearch.sink.Elasticsearch7SinkBuilder;
 import org.apache.flink.connector.jdbc.JdbcConnectionOptions;
 import org.apache.flink.connector.jdbc.JdbcExecutionOptions;
 import org.apache.flink.connector.jdbc.JdbcSink;
 import org.apache.flink.connector.kafka.source.KafkaSource;
 import org.apache.flink.connector.kafka.source.enumerator.initializer.OffsetsInitializer;
+import org.apache.flink.elasticsearch7.shaded.org.apache.http.HttpHost;
+import org.apache.flink.elasticsearch7.shaded.org.elasticsearch.action.index.IndexRequest;
+import org.apache.flink.elasticsearch7.shaded.org.elasticsearch.client.Requests;
+import org.apache.flink.elasticsearch7.shaded.org.elasticsearch.common.xcontent.XContentType;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+
+import static Utils.JsonUtils.ConvertTransactionToJson;
 
 public class DataStreamJob {
 	private static final String jdbcUrl = "jdbc:postgresql://postgres:5432/postgres";
@@ -232,6 +239,21 @@ public class DataStreamJob {
 				executionOptions,
 				connectionOptions
 		)).name("Insert data to sales_per_month table");
+
+		// Streaming data to Elasticsearch
+		transactionDataStream.sinkTo(
+				new Elasticsearch7SinkBuilder<Transaction>()
+						.setHosts(new HttpHost("localhost", 9200, "http"))
+						.setEmitter((transaction, context, requestIndexer) -> {
+							String jsonData = ConvertTransactionToJson(transaction);
+							IndexRequest indexRequest = Requests.indexRequest()
+									.index("transactions")
+									.id(transaction.getTransactionId().toString())
+									.source(jsonData, XContentType.JSON);
+							requestIndexer.add(indexRequest);
+						})
+						.build()
+		).name("Streaming data to Elasticsearch");
 
 		// Execute program, beginning computation.
 		env.execute("Flink Ecommerce Realtime Streaming");
